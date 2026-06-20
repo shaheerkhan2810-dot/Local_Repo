@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: user must be authenticated and own the document
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Helper: validate string field
+    function isValidString(field, maxLen) {
+      return field is string && field.size() <= maxLen;
+    }
+
+    // User profiles — full ownership
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      // All sub-collections under a user are owned by that user
+      match /main_streak/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /relapses/{docId} {
+        allow read, write: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && isValidString(request.resource.data.triggerCategory, 50);
+      }
+
+      match /urge_logs/{docId} {
+        allow read, write: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && request.resource.data.intensity >= 1
+          && request.resource.data.intensity <= 10;
+      }
+
+      match /trackers/{trackerId} {
+        allow read, write: if isOwner(uid);
+
+        match /entries/{entryId} {
+          allow read, write: if isOwner(uid);
+        }
+      }
+
+      match /tasks/{taskId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /challenges/{challengeId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /journal_entries/{entryId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /routine_blocks/{blockId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /badges/{badgeId} {
+        allow read: if isOwner(uid);
+        allow write: if isOwner(uid);
+      }
+    }
+
+    // Built-in challenges — all authenticated users can read, no one can write
+    match /built_in_challenges/{docId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // Deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
