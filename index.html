@@ -2,21 +2,788 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>BRO FORGE — Forge Yourself. Stay Hard.</title>
+  <meta name="description" content="BRO FORGE — a premium NoFap & self-improvement streak tracker. Build discipline, crush urges, and level up from Rookie to Legend." />
+
+  <!-- Mobile web-app / Add to Home Screen -->
+  <meta name="theme-color" content="#05060a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="BRO FORGE" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%2305060a'/%3E%3Ctext x='64' y='92' font-size='72' text-anchor='middle'%3E%F0%9F%94%A8%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%2305060a'/%3E%3Ctext x='64' y='92' font-size='72' text-anchor='middle'%3E%F0%9F%94%A8%3C/text%3E%3C/svg%3E" />
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Display + body fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#05060a',
+            panel: '#0b0e17',
+            panel2: '#11162280',
+            neon: {
+              green: '#39FF14',
+              magenta: '#FF00E5',
+              cyan: '#00F0FF',
+              amber: '#FFB800',
+            },
+          },
+          fontFamily: {
+            display: ['Orbitron', 'ui-sans-serif', 'system-ui'],
+            body: ['Rajdhani', 'ui-sans-serif', 'system-ui'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --green: #39FF14;
+      --magenta: #FF00E5;
+      --cyan: #00F0FF;
+    }
+
+    html, body { background-color: #05060a; }
+    body {
+      font-family: 'Rajdhani', system-ui, sans-serif;
+      color: #d7dbe7;
+      overflow-x: hidden;
+      /* Cyberpunk grid + glow backdrop */
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(255, 0, 229, 0.10), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(0, 240, 255, 0.10), transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(57, 255, 20, 0.08), transparent 45%),
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: auto, auto, auto, 44px 44px, 44px 44px;
+      background-attachment: fixed;
+    }
+
+    .font-display { font-family: 'Orbitron', system-ui, sans-serif; letter-spacing: 0.04em; }
+
+    /* Neon text glows */
+    .glow-green { color: var(--green); text-shadow: 0 0 6px rgba(57,255,20,.8), 0 0 22px rgba(57,255,20,.5); }
+    .glow-magenta { color: var(--magenta); text-shadow: 0 0 6px rgba(255,0,229,.8), 0 0 22px rgba(255,0,229,.5); }
+    .glow-cyan { color: var(--cyan); text-shadow: 0 0 6px rgba(0,240,255,.8), 0 0 22px rgba(0,240,255,.5); }
+
+    /* Glass panels */
+    .panel {
+      background: linear-gradient(160deg, rgba(17,22,34,.9), rgba(8,10,18,.9));
+      border: 1px solid rgba(0,240,255,.16);
+      border-radius: 1rem;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset, 0 20px 50px rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
+    }
+    .panel-green { border-color: rgba(57,255,20,.28); box-shadow: 0 0 26px rgba(57,255,20,.10), 0 20px 50px rgba(0,0,0,.55); }
+    .panel-magenta { border-color: rgba(255,0,229,.28); box-shadow: 0 0 26px rgba(255,0,229,.10), 0 20px 50px rgba(0,0,0,.55); }
+    .panel-cyan { border-color: rgba(0,240,255,.28); box-shadow: 0 0 26px rgba(0,240,255,.10), 0 20px 50px rgba(0,0,0,.55); }
+
+    /* Buttons */
+    .btn {
+      position: relative; font-family: 'Orbitron', sans-serif; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; border-radius: .7rem;
+      transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+      cursor: pointer; user-select: none;
+    }
+    .btn:active { transform: translateY(2px) scale(.98); }
+    .btn-green { background: linear-gradient(180deg, #2bd60f, #16a600); color: #04120a; box-shadow: 0 0 22px rgba(57,255,20,.5), 0 6px 0 #0a5c04; }
+    .btn-green:hover { box-shadow: 0 0 34px rgba(57,255,20,.8), 0 6px 0 #0a5c04; filter: brightness(1.06); }
+    .btn-magenta { background: linear-gradient(180deg, #ff35ec, #b800a3); color: #16000f; box-shadow: 0 0 22px rgba(255,0,229,.5), 0 6px 0 #6e0062; }
+    .btn-magenta:hover { box-shadow: 0 0 34px rgba(255,0,229,.8), 0 6px 0 #6e0062; filter: brightness(1.06); }
+    .btn-ghost { background: transparent; color: #b8c0d4; border: 1px solid rgba(255,255,255,.16); }
+    .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 18px rgba(0,240,255,.35); }
+
+    /* Streak number flicker/pulse */
+    @keyframes streakPulse {
+      0%, 100% { text-shadow: 0 0 10px rgba(57,255,20,.9), 0 0 40px rgba(57,255,20,.6), 0 0 80px rgba(255,184,0,.3); }
+      50% { text-shadow: 0 0 18px rgba(57,255,20,1), 0 0 60px rgba(255,184,0,.6), 0 0 110px rgba(255,0,229,.35); }
+    }
+    .streak-num { animation: streakPulse 2.4s ease-in-out infinite; }
+    @keyframes bump { 0% { transform: scale(1);} 30% { transform: scale(1.35);} 100% { transform: scale(1);} }
+    .bump { animation: bump .5s cubic-bezier(.2,1.4,.4,1); }
+
+    /* Fire flames */
+    @keyframes flicker {
+      0%, 100% { transform: scaleY(1) translateY(0); opacity: .9; }
+      25% { transform: scaleY(1.18) translateY(-4px); opacity: 1; }
+      50% { transform: scaleY(.9) translateY(2px); opacity: .8; }
+      75% { transform: scaleY(1.1) translateY(-2px); opacity: 1; }
+    }
+    .flame { display:inline-block; transform-origin: center bottom; animation: flicker 1.1s ease-in-out infinite; }
+    .flame:nth-child(2){ animation-delay: .2s; }
+    .flame:nth-child(3){ animation-delay: .4s; }
+
+    /* XP bar shimmer */
+    .xp-track { background: rgba(255,255,255,.06); border: 1px solid rgba(0,240,255,.2); }
+    .xp-fill {
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+      box-shadow: 0 0 16px rgba(57,255,20,.7);
+      transition: width .8s cubic-bezier(.2,.9,.2,1);
+      position: relative; overflow: hidden;
+    }
+    .xp-fill::after {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: translateX(-100%); animation: shimmer 2.2s linear infinite;
+    }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+
+    /* Ring */
+    .ring-bg { stroke: rgba(255,255,255,.08); }
+    .ring-fg { stroke: url(#ringGrad); stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(.2,.9,.2,1); filter: drop-shadow(0 0 6px rgba(0,240,255,.7)); }
+
+    /* Habit rows */
+    .habit {
+      transition: transform .15s ease, border-color .2s ease, background .2s ease;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .habit:hover { transform: translateX(4px); border-color: rgba(0,240,255,.4); }
+    .habit.done {
+      border-color: rgba(57,255,20,.6);
+      background: linear-gradient(90deg, rgba(57,255,20,.12), transparent);
+    }
+    .habit .check {
+      width: 30px; height: 30px; border-radius: .5rem; border: 2px solid rgba(255,255,255,.25);
+      display:flex; align-items:center; justify-content:center; transition: all .2s ease; flex: none;
+    }
+    .habit.done .check { border-color: var(--green); background: var(--green); box-shadow: 0 0 16px rgba(57,255,20,.7); }
+    .habit .check svg { opacity: 0; transform: scale(.4); transition: all .2s ease; }
+    .habit.done .check svg { opacity: 1; transform: scale(1); }
+    .habit.done .habit-name { color: var(--green); }
+
+    /* Breathing orb */
+    .breath-orb {
+      background: radial-gradient(circle at 40% 35%, rgba(0,240,255,.9), rgba(255,0,229,.35) 60%, transparent 75%);
+      box-shadow: 0 0 40px rgba(0,240,255,.5), inset 0 0 40px rgba(255,0,229,.4);
+      transition: transform 4s ease-in-out;
+    }
+
+    /* Confetti */
+    .confetti-piece { position: fixed; top: -12px; width: 10px; height: 16px; z-index: 60; will-change: transform, opacity; pointer-events: none; }
+    @keyframes confFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+    /* Level-up toast */
+    #toast { transition: transform .4s cubic-bezier(.2,1.4,.4,1), opacity .4s ease; }
+
+    /* Scrollbar */
+    .scroll-neon::-webkit-scrollbar { width: 8px; }
+    .scroll-neon::-webkit-scrollbar-thumb { background: rgba(0,240,255,.4); border-radius: 8px; }
+    .scroll-neon::-webkit-scrollbar-track { background: transparent; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .streak-num, .flame, .xp-fill::after, .bump { animation: none !important; }
+      .breath-orb { transition: none; }
+    }
+  </style>
 </head>
 
-<body>
-    <h1>
-        This is a new repo and something will come here in the future.
-    </h1>
-    <div>This is a new feature.</div>
+<body class="min-h-screen font-body selection:bg-neon-magenta/40">
 
-    <div>This is another new feature (dropdown)</div>
-    
+  <!-- Level-up toast -->
+  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[70] opacity-0 pointer-events-none">
+    <div class="panel panel-magenta px-6 py-3 flex items-center gap-3">
+      <span class="text-2xl">⚡</span>
+      <div>
+        <div class="font-display text-xs tracking-widest text-neon-magenta">LEVEL UP</div>
+        <div id="toastText" class="font-display font-bold text-white text-lg leading-none"></div>
+      </div>
+    </div>
+  </div>
 
+  <!-- NAV -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-void/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🔨</span>
+        <span class="font-display font-black text-xl sm:text-2xl">
+          <span class="glow-green">BRO</span><span class="glow-magenta">FORGE</span>
+        </span>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="hidden sm:flex items-center gap-2 panel px-3 py-1.5">
+          <span class="text-lg">🏆</span>
+          <span id="navRank" class="font-display font-bold text-sm glow-cyan">ROOKIE</span>
+        </div>
+        <div class="flex items-center gap-1.5 panel px-3 py-1.5">
+          <span class="text-neon-amber">✦</span>
+          <span id="navXP" class="font-display font-bold text-sm text-neon-amber">0 XP</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 pb-16">
+
+    <!-- HERO -->
+    <section class="pt-8 sm:pt-12 text-center">
+      <p class="font-display tracking-[0.35em] text-xs sm:text-sm text-neon-cyan/80 mb-3">FORGE YOURSELF · STAY HARD</p>
+
+      <div class="panel panel-green mx-auto max-w-2xl px-6 py-8 sm:py-10 relative overflow-hidden">
+        <div class="text-3xl sm:text-4xl mb-1">
+          <span class="flame">🔥</span><span class="flame">🔥</span><span class="flame">🔥</span>
+        </div>
+        <div id="streakNum" class="streak-num font-display font-black glow-green leading-none text-7xl sm:text-8xl md:text-9xl">0</div>
+        <div class="font-display tracking-[0.3em] text-neon-green/90 text-sm sm:text-base mt-2">DAY STREAK</div>
+        <div class="mt-1 text-white/60 text-sm">Best streak: <span id="bestStreak" class="text-neon-amber font-semibold">0</span> days · No excuses, king.</div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
+          <button id="addDayBtn" class="btn btn-green w-full sm:w-auto px-8 py-3 text-base">+1 Day 🔥</button>
+          <button id="resetBtn" class="btn btn-ghost w-full sm:w-auto px-6 py-3 text-sm">Relapse / Reset</button>
+        </div>
+      </div>
+
+      <!-- Rotating quote -->
+      <div class="mt-6 max-w-2xl mx-auto panel panel-cyan px-5 py-4">
+        <p id="quote" class="font-display text-base sm:text-lg text-white/90 italic">"Discipline is choosing between what you want now and what you want most."</p>
+        <button id="newQuoteBtn" class="btn btn-ghost mt-3 px-4 py-1.5 text-xs">↻ New Quote</button>
+      </div>
+    </section>
+
+    <!-- STATS: Level + Ring + XP -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+
+      <!-- Rank card -->
+      <div class="panel panel-magenta p-5 flex flex-col items-center justify-center text-center">
+        <div id="rankBadge" class="text-5xl mb-2">🥊</div>
+        <div class="font-display tracking-widest text-xs text-white/50">CURRENT RANK</div>
+        <div id="rankTitle" class="font-display font-black text-2xl glow-magenta mt-1">ROOKIE</div>
+        <div id="rankNext" class="text-sm text-white/60 mt-2">Reach 100 XP to become a WARRIOR</div>
+      </div>
+
+      <!-- Progress ring -->
+      <div class="panel panel-cyan p-5 flex flex-col items-center justify-center">
+        <div class="relative w-40 h-40">
+          <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+            <defs>
+              <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#39FF14" />
+                <stop offset="100%" stop-color="#00F0FF" />
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="60" cy="60" r="52" fill="none" stroke-width="10" />
+            <circle id="ring" class="ring-fg" cx="60" cy="60" r="52" fill="none" stroke-width="10"
+              stroke-dasharray="326.7" stroke-dashoffset="326.7" />
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span id="ringPct" class="font-display font-black text-3xl glow-cyan">0%</span>
+            <span class="text-[11px] tracking-widest text-white/50">TO NEXT RANK</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- XP bar + level -->
+      <div class="panel panel-green p-5 flex flex-col justify-center">
+        <div class="flex items-baseline justify-between mb-2">
+          <span class="font-display text-sm text-white/60">LEVEL <span id="levelNum" class="glow-green">1</span></span>
+          <span id="xpText" class="font-display text-sm text-neon-amber">0 / 100 XP</span>
+        </div>
+        <div class="xp-track h-5 rounded-full w-full overflow-hidden">
+          <div id="xpFill" class="xp-fill h-full rounded-full" style="width:0%"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-4 text-center">
+          <div class="rounded-lg bg-white/5 py-2">
+            <div id="totalXP" class="font-display font-bold text-neon-cyan text-lg">0</div>
+            <div class="text-[11px] tracking-wider text-white/50">TOTAL XP</div>
+          </div>
+          <div class="rounded-lg bg-white/5 py-2">
+            <div id="habitsToday" class="font-display font-bold text-neon-green text-lg">0/6</div>
+            <div class="text-[11px] tracking-wider text-white/50">HABITS TODAY</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HABITS + JOURNAL -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
+
+      <!-- Daily habits -->
+      <div class="panel p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display font-bold text-lg glow-green">⚔️ DAILY GRIND</h2>
+          <span class="text-xs text-white/50 font-display" id="todayLabel"></span>
+        </div>
+        <div id="habitList" class="space-y-2"></div>
+        <p class="text-xs text-white/40 mt-4">Check every box. Earn XP. Habits reset each new day — but your streak stays. 💪</p>
+      </div>
+
+      <!-- Journal -->
+      <div class="panel panel-cyan p-5">
+        <h2 class="font-display font-bold text-lg glow-cyan mb-4">📓 MISSION JOURNAL</h2>
+        <div class="flex flex-col gap-2">
+          <textarea id="journalInput" rows="3" placeholder="Log today's battle, king. Wins, urges crushed, lessons learned..."
+            class="w-full bg-black/40 border border-white/10 focus:border-neon-cyan/60 rounded-lg p-3 text-sm text-white placeholder-white/30 outline-none resize-none transition"></textarea>
+          <button id="addJournalBtn" class="btn btn-magenta px-5 py-2.5 text-sm self-start">Log Entry ✍️</button>
+        </div>
+        <div id="journalList" class="mt-4 space-y-2 max-h-64 overflow-y-auto scroll-neon pr-1"></div>
+      </div>
+    </section>
+
+    <!-- URGE CRUSHER -->
+    <section class="mt-8">
+      <div class="panel panel-magenta p-5 sm:p-6">
+        <h2 class="font-display font-bold text-xl glow-magenta text-center">🛡️ URGE CRUSHER</h2>
+        <p class="text-center text-white/60 text-sm mt-1">Feeling the urge? Don't negotiate with weakness. Move. Breathe. Win.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+
+          <!-- Quick tips -->
+          <div>
+            <h3 class="font-display text-sm tracking-widest text-neon-cyan mb-3">⚡ INSTANT WEAPONS</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="tipGrid"></div>
+          </div>
+
+          <!-- Breathing timer -->
+          <div class="flex flex-col items-center justify-center panel p-5">
+            <h3 class="font-display text-sm tracking-widest text-neon-green mb-4">🫁 BOX BREATHING</h3>
+            <div class="relative w-40 h-40 flex items-center justify-center mb-4">
+              <div id="breathOrb" class="breath-orb w-24 h-24 rounded-full"></div>
+              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span id="breathText" class="font-display font-bold text-white text-lg">READY</span>
+                <span id="breathCount" class="font-display text-neon-cyan text-sm"></span>
+              </div>
+            </div>
+            <button id="breathBtn" class="btn btn-green px-6 py-2.5 text-sm">Start Breathing</button>
+            <p class="text-[11px] text-white/40 mt-3 text-center">Inhale 4s · Hold 4s · Exhale 4s · Hold 4s</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-center mt-12 text-white/40 text-sm">
+      <p class="font-display tracking-widest">BUILT DIFFERENT · <span class="glow-green">STAY HARD, KING</span> 👑</p>
+      <p class="mt-1 text-xs">Your data lives only in this browser. Forge on.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ---------- Config ----------
+      const STORAGE_KEY = 'broForgeState';
+      const HABITS = [
+        { id: 'gym',        name: 'Hit the Gym',    icon: '🏋️', xp: 25 },
+        { id: 'cold',       name: 'Cold Shower',    icon: '🚿', xp: 15 },
+        { id: 'noporn',     name: 'No Porn',        icon: '🚫', xp: 30 },
+        { id: 'reading',    name: 'Read 20 min',    icon: '📚', xp: 15 },
+        { id: 'meditation', name: 'Meditate',       icon: '🧘', xp: 15 },
+        { id: 'nosugar',    name: 'No Junk / Sugar',icon: '🥦', xp: 15 },
+      ];
+      const STREAK_XP = 20; // xp per day advanced
+
+      const RANKS = [
+        { title: 'ROOKIE',  badge: '🥊', min: 0 },
+        { title: 'WARRIOR', badge: '⚔️', min: 100 },
+        { title: 'BEAST',   badge: '🐺', min: 300 },
+        { title: 'LEGEND',  badge: '👑', min: 700 },
+      ];
+
+      const QUOTES = [
+        "Discipline is choosing between what you want now and what you want most.",
+        "You don't rise to the level of your goals. You fall to the level of your systems.",
+        "The urge is temporary. The regret is permanent. Stay hard, king.",
+        "Comfort is the enemy. Forge yourself in the fire, beast.",
+        "Every rep, every cold shower, every 'no' — that's you building the man.",
+        "Motivation gets you started. Discipline keeps you a legend.",
+        "The version of you that quits and the version that wins are one decision apart.",
+        "Nobody is coming to save you. Good. Save yourself, king.",
+        "Weakness is a whisper. Silence it with action.",
+        "Your future self is watching. Don't let that king down.",
+        "Suffer the pain of discipline or suffer the pain of regret. Choose.",
+        "You were not born to be average. Forge. Grind. Conquer.",
+      ];
+
+      const TIPS = [
+        { icon: '🥶', t: 'Cold water on your face — 30 seconds' },
+        { icon: '💪', t: 'Drop and do 20 push-ups NOW' },
+        { icon: '🚶', t: 'Get outside. Walk it off, king' },
+        { icon: '📞', t: 'Call or text an accountability bro' },
+        { icon: '💧', t: 'Chug a full glass of cold water' },
+        { icon: '🎧', t: 'Blast a hype track & move your body' },
+      ];
+
+      // ---------- State ----------
+      function todayKey() {
+        const d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+
+      function defaultState() {
+        return {
+          streak: 0,
+          bestStreak: 0,
+          totalXP: 0,
+          habitsByDate: {},
+          journal: [],
+          lastActiveDate: todayKey(),
+        };
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return defaultState();
+          const s = Object.assign(defaultState(), JSON.parse(raw));
+          if (!s.habitsByDate) s.habitsByDate = {};
+          if (!Array.isArray(s.journal)) s.journal = [];
+          return s;
+        } catch (e) {
+          return defaultState();
+        }
+      }
+
+      function saveState() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      }
+
+      let state = loadState();
+      state.lastActiveDate = todayKey(); // habitsByDate auto-scopes per day, so nothing to wipe
+
+      function todaysHabits() {
+        const k = todayKey();
+        if (!state.habitsByDate[k]) state.habitsByDate[k] = {};
+        return state.habitsByDate[k];
+      }
+
+      // ---------- Level / rank helpers ----------
+      function computeLevel(xp) { return Math.floor(xp / 100) + 1; }
+
+      function currentRank(xp) {
+        let r = RANKS[0];
+        for (const rank of RANKS) { if (xp >= rank.min) r = rank; }
+        return r;
+      }
+      function nextRank(xp) {
+        for (const rank of RANKS) { if (xp < rank.min) return rank; }
+        return null;
+      }
+
+      function addXP(n) {
+        const beforeLevel = computeLevel(state.totalXP);
+        const beforeRank = currentRank(state.totalXP).title;
+        state.totalXP = Math.max(0, state.totalXP + n);
+        const afterLevel = computeLevel(state.totalXP);
+        const afterRank = currentRank(state.totalXP).title;
+        if (n > 0 && afterRank !== beforeRank) {
+          showToast('You are now a ' + afterRank + '!');
+          celebrate();
+        } else if (n > 0 && afterLevel > beforeLevel) {
+          showToast('Reached Level ' + afterLevel + '!');
+        }
+      }
+
+      // ---------- DOM refs ----------
+      const $ = (id) => document.getElementById(id);
+      const RING_CIRC = 2 * Math.PI * 52; // 326.7
+
+      // ---------- Render ----------
+      function render() {
+        const xp = state.totalXP;
+        const level = computeLevel(xp);
+        const rank = currentRank(xp);
+        const next = nextRank(xp);
+
+        // Streak
+        $('streakNum').textContent = state.streak;
+        $('bestStreak').textContent = state.bestStreak;
+
+        // Nav
+        $('navRank').textContent = rank.title;
+        $('navXP').textContent = xp + ' XP';
+
+        // Rank card
+        $('rankBadge').textContent = rank.badge;
+        $('rankTitle').textContent = rank.title;
+        $('rankNext').textContent = next
+          ? ('Reach ' + next.min + ' XP to become a ' + next.title)
+          : 'MAX RANK — you are a LEGEND, king 👑';
+
+        // XP bar (progress within current 100-xp level)
+        const intoLevel = xp % 100;
+        $('levelNum').textContent = level;
+        $('xpText').textContent = intoLevel + ' / 100 XP';
+        $('xpFill').style.width = intoLevel + '%';
+        $('totalXP').textContent = xp;
+
+        // Ring: progress toward next RANK (or full if maxed)
+        let pct;
+        if (next) {
+          const span = next.min - rank.min;
+          pct = span > 0 ? Math.min(100, Math.round(((xp - rank.min) / span) * 100)) : 100;
+        } else {
+          pct = 100;
+        }
+        $('ringPct').textContent = pct + '%';
+        $('ring').style.strokeDashoffset = String(RING_CIRC * (1 - pct / 100));
+
+        // Habits
+        const th = todaysHabits();
+        const doneCount = HABITS.filter(h => th[h.id]).length;
+        $('habitsToday').textContent = doneCount + '/' + HABITS.length;
+        $('todayLabel').textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+
+        HABITS.forEach(h => {
+          const row = $('habit-' + h.id);
+          if (row) row.classList.toggle('done', !!th[h.id]);
+        });
+
+        renderJournal();
+        saveState();
+      }
+
+      function renderJournal() {
+        const list = $('journalList');
+        list.innerHTML = '';
+        if (!state.journal.length) {
+          list.innerHTML = '<p class="text-white/30 text-sm italic">No entries yet. Log your first victory, king.</p>';
+          return;
+        }
+        state.journal.slice().reverse().forEach((entry, i) => {
+          const realIndex = state.journal.length - 1 - i;
+          const div = document.createElement('div');
+          div.className = 'rounded-lg bg-black/40 border border-white/10 p-3';
+          const head = document.createElement('div');
+          head.className = 'flex items-center justify-between mb-1';
+          const date = document.createElement('span');
+          date.className = 'font-display text-xs text-neon-cyan tracking-wider';
+          date.textContent = entry.date;
+          const del = document.createElement('button');
+          del.className = 'text-white/30 hover:text-neon-magenta text-xs transition';
+          del.textContent = '✕';
+          del.title = 'Delete entry';
+          del.addEventListener('click', () => {
+            state.journal.splice(realIndex, 1);
+            render();
+          });
+          head.appendChild(date);
+          head.appendChild(del);
+          const body = document.createElement('p');
+          body.className = 'text-sm text-white/85 whitespace-pre-wrap break-words';
+          body.textContent = entry.text;
+          div.appendChild(head);
+          div.appendChild(body);
+          list.appendChild(div);
+        });
+      }
+
+      // ---------- Build static lists ----------
+      function buildHabits() {
+        const list = $('habitList');
+        HABITS.forEach(h => {
+          const row = document.createElement('button');
+          row.id = 'habit-' + h.id;
+          row.type = 'button';
+          row.className = 'habit w-full text-left flex items-center gap-3 rounded-xl px-3 py-3 bg-white/[0.03]';
+          row.innerHTML =
+            '<span class="check">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#04120a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+            '</span>' +
+            '<span class="text-2xl">' + h.icon + '</span>' +
+            '<span class="habit-name flex-1 font-semibold text-white/90">' + h.name + '</span>' +
+            '<span class="font-display text-xs text-neon-amber">+' + h.xp + '</span>';
+          row.addEventListener('click', () => toggleHabit(h));
+          list.appendChild(row);
+        });
+      }
+
+      function buildTips() {
+        const grid = $('tipGrid');
+        TIPS.forEach(tip => {
+          const div = document.createElement('div');
+          div.className = 'rounded-lg bg-black/30 border border-white/10 hover:border-neon-magenta/50 transition p-3 flex items-center gap-2';
+          div.innerHTML = '<span class="text-xl">' + tip.icon + '</span><span class="text-sm text-white/85">' + tip.t + '</span>';
+          grid.appendChild(div);
+        });
+      }
+
+      // ---------- Actions ----------
+      function toggleHabit(h) {
+        const th = todaysHabits();
+        if (th[h.id]) {
+          th[h.id] = false;
+          addXP(-h.xp);
+        } else {
+          th[h.id] = true;
+          addXP(h.xp);
+          playChime(660);
+          // Small confetti if all habits done
+          if (HABITS.every(x => th[x.id])) {
+            celebrate();
+            showToast('Perfect day! All habits crushed 💥');
+          }
+        }
+        render();
+      }
+
+      function advanceDay() {
+        state.streak += 1;
+        if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+        addXP(STREAK_XP);
+        const el = $('streakNum');
+        el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+        celebrate();
+        playChime(523); playChime(784, 0.12);
+        render();
+      }
+
+      function resetStreak() {
+        if (state.streak === 0) return;
+        if (!confirm("Reset your streak to 0? Every legend falls — what matters is you rise again, king. 💪")) return;
+        state.streak = 0;
+        render();
+      }
+
+      function addJournal() {
+        const input = $('journalInput');
+        const text = input.value.trim();
+        if (!text) return;
+        state.journal.push({ date: new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }), text });
+        input.value = '';
+        render();
+        playChime(587);
+      }
+
+      let lastQuote = -1;
+      function rotateQuote() {
+        let i;
+        do { i = Math.floor(Math.random() * QUOTES.length); } while (i === lastQuote && QUOTES.length > 1);
+        lastQuote = i;
+        $('quote').textContent = '"' + QUOTES[i] + '"';
+      }
+
+      // ---------- Celebration ----------
+      function celebrate() {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const colors = ['#39FF14', '#FF00E5', '#00F0FF', '#FFB800', '#ffffff'];
+        const count = 70;
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement('div');
+          p.className = 'confetti-piece';
+          const left = Math.random() * 100;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          const dur = 2 + Math.random() * 1.8;
+          const delay = Math.random() * 0.3;
+          p.style.left = left + 'vw';
+          p.style.background = color;
+          p.style.boxShadow = '0 0 8px ' + color;
+          p.style.borderRadius = Math.random() > 0.5 ? '2px' : '50%';
+          p.style.animation = 'confFall ' + dur + 's linear ' + delay + 's forwards';
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), (dur + delay) * 1000 + 100);
+        }
+      }
+
+      function showToast(text) {
+        const t = $('toast');
+        $('toastText').textContent = text;
+        t.style.opacity = '1';
+        t.style.transform = 'translateX(-50%) translateY(6px) scale(1)';
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => {
+          t.style.opacity = '0';
+          t.style.transform = 'translateX(-50%) translateY(-10px) scale(.95)';
+        }, 2600);
+      }
+
+      // ---------- Sound (Web Audio, no files) ----------
+      let audioCtx = null;
+      function playChime(freq, delay) {
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const start = audioCtx.currentTime + (delay || 0);
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq || 600, start);
+          gain.gain.setValueAtTime(0.0001, start);
+          gain.gain.exponentialRampToValueAtTime(0.18, start + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.35);
+          osc.connect(gain); gain.connect(audioCtx.destination);
+          osc.start(start); osc.stop(start + 0.4);
+        } catch (e) {}
+      }
+
+      // ---------- Breathing timer ----------
+      const BREATH = [
+        { label: 'INHALE', dur: 4, scale: 1.7 },
+        { label: 'HOLD',   dur: 4, scale: 1.7 },
+        { label: 'EXHALE', dur: 4, scale: 1.0 },
+        { label: 'HOLD',   dur: 4, scale: 1.0 },
+      ];
+      let breathOn = false, breathPhase = 0, breathTimer = null, breathCountdown = null;
+
+      function startBreathing() {
+        const orb = $('breathOrb');
+        if (breathOn) {
+          breathOn = false;
+          clearTimeout(breathTimer); clearInterval(breathCountdown);
+          orb.style.transitionDuration = '0.6s';
+          orb.style.transform = 'scale(1)';
+          $('breathText').textContent = 'READY';
+          $('breathCount').textContent = '';
+          $('breathBtn').textContent = 'Start Breathing';
+          return;
+        }
+        breathOn = true; breathPhase = 0;
+        $('breathBtn').textContent = 'Stop';
+        runPhase();
+      }
+
+      function runPhase() {
+        if (!breathOn) return;
+        const phase = BREATH[breathPhase % BREATH.length];
+        const orb = $('breathOrb');
+        $('breathText').textContent = phase.label;
+        orb.style.transitionDuration = phase.dur + 's';
+        orb.style.transform = 'scale(' + phase.scale + ')';
+
+        let remaining = phase.dur;
+        $('breathCount').textContent = remaining;
+        clearInterval(breathCountdown);
+        breathCountdown = setInterval(() => {
+          remaining -= 1;
+          $('breathCount').textContent = remaining > 0 ? remaining : '';
+          if (remaining <= 0) clearInterval(breathCountdown);
+        }, 1000);
+
+        breathTimer = setTimeout(() => {
+          breathPhase += 1;
+          runPhase();
+        }, phase.dur * 1000);
+      }
+
+      // ---------- Wire up ----------
+      $('addDayBtn').addEventListener('click', advanceDay);
+      $('resetBtn').addEventListener('click', resetStreak);
+      $('newQuoteBtn').addEventListener('click', rotateQuote);
+      $('addJournalBtn').addEventListener('click', addJournal);
+      $('journalInput').addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') addJournal();
+      });
+      $('breathBtn').addEventListener('click', startBreathing);
+
+      buildHabits();
+      buildTips();
+      rotateQuote();
+      render();
+
+      // Rotate quote every 30s
+      setInterval(rotateQuote, 30000);
+    })();
+  </script>
 </body>
 
 </html>
